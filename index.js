@@ -12,7 +12,15 @@ var arrayContains = function(a, obj) {
 var getDependenciesGlob = function(devDependencies, packageJsonFilePath) {
   var buffer, packages, keys;
   
-  buffer = fs.readFileSync(packageJsonFilePath || './package.json');
+  packageJsonFilePath = packageJsonFilePath || './package.json';
+  
+  try {
+	fs.accessSync(packageJsonFilePath);
+  } catch (e) {
+	return [];
+  }
+  
+  buffer = fs.readFileSync(packageJsonFilePath);
   packages = JSON.parse(buffer.toString());
   keys = [];
   
